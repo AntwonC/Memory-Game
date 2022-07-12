@@ -1,0 +1,13 @@
+#scoreContainer {
+    display: flex; 
+    flex-direction: column;
+    align-items: flex-end;
+       
+}
+.scoreText {
+    color: yellow;     
+    margin-right: 20px;
+    font-size: 25px;
+    font-family: t26-carbon, monospace;
+    
+}
