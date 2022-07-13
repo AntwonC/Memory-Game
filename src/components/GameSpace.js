@@ -2,11 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/GameSpace.css';
 import Card from './Card';
+import Deck from './Deck';
 
 const GameSpace = () => {
   return (
     <div id="gameSpaceContainer">
-      <Card />
+      <Deck />
     </div>
   );
 };
