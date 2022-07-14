@@ -1,6 +1,5 @@
 /* eslint-disable arrow-body-style */
 import React, { useState, useEffect } from 'react';
-
 import '../styles/Card.css';
 
 const Card = () => {

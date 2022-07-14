@@ -171,38 +171,66 @@ const Deck = () => {
 
   const generateThreeCards = (deck) => {
     const deckSize = images.length;
-    const min = Math.ceil(1);
+    const min = Math.ceil(0);
     const max = Math.floor(23);
-    console.log(deckSize);
 
     // const threeCards = deck.map()
     const threeCards = [];
     for (let i = 0; i < 3; i += 1) {
-      const rng = Math.floor(Math.random() * (max - min) + min);
-      // console.log(deck[rng].src);
-      threeCards.push(deck[rng].src);
+      let rng = Math.floor(Math.random() * (max - min) + min);
+      let duplicateNumber = threeCards.includes(deck[rng]);
+      const generatedDupe = deck[rng].generated;
+
+      while (duplicateNumber) {
+        rng = Math.floor(Math.random() * (max - min) + min);
+        duplicateNumber = threeCards.includes(deck[rng]);
+      }
+      // console.log(deck[rng]);
+      threeCards.push(deck[rng]);
     }
 
     const result = threeCards.map((randomImage) => {
-      return <img src={randomImage} alt="randomGun" />;
+      return <img src={randomImage.src} id={randomImage.id} className="gunCard" alt="randomGun" key={randomImage.id} />;
     });
-
-    console.log(threeCards);
 
     return result;
   };
+
+  useEffect(() => {
+    const changeGeneratedOnClick = (imageNumber) => {
+      const cardArr = [...card];
+      console.log(imageNumber);
+      // console.log(imageNumber.id);
+      console.log(card[imageNumber.id]);
+
+      if (cardArr[imageNumber.id - 1].generated === false) {
+        cardArr[imageNumber.id - 1].generated = true;
+        setCard(cardArr);
+      }
+    };
+
+    const gunImage = document.querySelectorAll('.gunCard');
+    // console.log(gunImage);
+
+    for (let i = 0; i < gunImage.length; i += 1) {
+      gunImage[i].addEventListener('click', () => {
+        changeGeneratedOnClick(gunImage[i]);
+      });
+    }
+    // gunImage.addEventListener('click', changeGeneratedOnClick);
+
+    return () => {
+      for (let i = 0; i < gunImage.length; i += 1) {
+        gunImage[i].removeEventListener('click', () => {
+          changeGeneratedOnClick(gunImage[i]);
+        });
+      }
+    };
+  }, [card]);
   return (
     <div>
       <div>
         {generateThreeCards(card)}
-        {/*  {card.map((element) => {
-          console.log(element.image);
-          return (
-
-            <img src={element.src} key={element.id} alt={element.name} />
-          );
-        })}
-    */}
       </div>
     </div>
   );
