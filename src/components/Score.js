@@ -1,17 +1,18 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 /* eslint-disable arrow-body-style */
 import React, { useState, useEffect } from 'react';
 import '../styles/Score.css';
 
-const Score = () => {
-  const [currentScore, setCurrentScore] = useState(0);
-  const [bestScore, setBestScore] = useState(0);
+const Score = (props) => {
+  const { currScore, bestScore } = props;
 
   return (
     <div id="scoreContainer">
       <div className="scoreText">
         Current Score:
         {' '}
-        {currentScore}
+        {currScore}
         {' '}
       </div>
       <div className="scoreText">

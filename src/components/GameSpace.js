@@ -2,11 +2,24 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/GameSpace.css';
 import Deck from './Deck';
+import Score from './Score';
 
 const GameSpace = () => {
+  const [score, setScore] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
+
+  const increaseScore = () => {
+    setScore(score + 1);
+  };
+
+  const resetScore = () => {
+    setScore(0);
+  };
+
   return (
     <div id="gameSpaceContainer">
-      <Deck />
+      <Score currScore={score} bestScore={bestScore} />
+      <Deck givePoint={increaseScore} gameOverScore={resetScore} currScore={score} />
     </div>
   );
 };

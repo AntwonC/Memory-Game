@@ -1,3 +1,6 @@
+/* eslint-disable no-continue */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 /* eslint-disable global-require */
 /* eslint-disable arrow-body-style */
 import React, { useState, useEffect } from 'react';
@@ -25,7 +28,7 @@ import ump45 from '../images/ump45.png';
 import vector from '../images/vector.png';
 import wa2000 from '../images/wa2000.png';
 
-const Deck = () => {
+const Deck = (props) => {
   const images = [
     {
       id: 1,
@@ -167,8 +170,28 @@ const Deck = () => {
     },
   ];
 
+  // const { currentScore, bestScore } = score;
   const [card, setCard] = useState(images);
+  const { givePoint, gameOverScore, currScore } = props;
 
+  const generateAtLeastOneTrue = (deck) => {
+    if (currScore === 0) {
+      return -1;
+    }
+    const min = Math.ceil(0);
+    const max = Math.floor(23);
+
+    let rng = Math.floor(Math.random() * (max - min) + min);
+    let alreadyTrue = deck[rng].generated;
+
+    while (!alreadyTrue) {
+      rng = Math.floor(Math.random() * (max - min) + min);
+      alreadyTrue = deck[rng].generated;
+    }
+
+    return rng;
+  };
+  // Generate three cards, but also generate at least 1 generated: true card
   const generateThreeCards = (deck) => {
     const deckSize = images.length;
     const min = Math.ceil(0);
@@ -179,7 +202,12 @@ const Deck = () => {
     for (let i = 0; i < 3; i += 1) {
       let rng = Math.floor(Math.random() * (max - min) + min);
       let duplicateNumber = threeCards.includes(deck[rng]);
-      const generatedDupe = deck[rng].generated;
+      const generatedDupe = generateAtLeastOneTrue(deck);
+      console.log(`Dupe ID: ${generatedDupe}`);
+      if (generatedDupe !== -1 && !threeCards.includes(deck[rng])) {
+        threeCards.push(deck[rng]);
+        continue;
+      }
 
       while (duplicateNumber) {
         rng = Math.floor(Math.random() * (max - min) + min);
@@ -188,7 +216,7 @@ const Deck = () => {
       // console.log(deck[rng]);
       threeCards.push(deck[rng]);
     }
-
+    console.log(threeCards);
     const result = threeCards.map((randomImage) => {
       return <img src={randomImage.src} id={randomImage.id} className="gunCard" alt="randomGun" key={randomImage.id} />;
     });
@@ -199,34 +227,42 @@ const Deck = () => {
   useEffect(() => {
     const changeGeneratedOnClick = (imageNumber) => {
       const cardArr = [...card];
-      console.log(imageNumber);
+      // console.log(imageNumber);
       // console.log(imageNumber.id);
-      console.log(card[imageNumber.id]);
+      // console.log(card[imageNumber.id]);
 
+      // console.log(`${imageNumber.id - 1} ${cardArr[imageNumber.id - 1].generated}`);
       if (cardArr[imageNumber.id - 1].generated === false) {
+        givePoint();
         cardArr[imageNumber.id - 1].generated = true;
         setCard(cardArr);
+
+        console.log('IN CHANGE GENERATED ON CLICK');
+      } else {
+        gameOverScore();
       }
     };
 
     const gunImage = document.querySelectorAll('.gunCard');
-    // console.log(gunImage);
 
     for (let i = 0; i < gunImage.length; i += 1) {
       gunImage[i].addEventListener('click', () => {
         changeGeneratedOnClick(gunImage[i]);
+        // console.log(gunImage[i]);
       });
     }
-    // gunImage.addEventListener('click', changeGeneratedOnClick);
 
     return () => {
-      for (let i = 0; i < gunImage.length; i += 1) {
-        gunImage[i].removeEventListener('click', () => {
-          changeGeneratedOnClick(gunImage[i]);
-        });
+      for (let j = 0; j < gunImage.length; j += 1) {
+        gunImage[j].removeEventListener('click', changeGeneratedOnClick);
+      /*  gunImage[j].removeEventListener('click', () => {
+          changeGeneratedOnClick(gunImage[j]);
+          // console.log(gunImage[j]);
+        }); */
       }
     };
-  }, [card]);
+    // gunImage.addEventListener('click', changeGeneratedOnClick);
+  }, [card, currScore]);
   return (
     <div>
       <div>
