@@ -174,6 +174,26 @@ const Deck = (props) => {
   const [card, setCard] = useState(images);
   const { givePoint, gameOverScore, currScore } = props;
 
+  const manuallyAddFirstPoint = () => {
+    const cardArr = [...card];
+    console.log('This ran');
+    console.log(currScore + 1);
+    if (currScore === 0) {
+      console.log('Must run');
+      for (let i = 0; i < cardArr.length; i += 1) {
+        // console.log(cardArr[i]);
+        if (cardArr[i].generated) {
+          console.log(cardArr[i]);
+
+          givePoint();
+          console.log('After give Point()');
+          break;
+        }
+      }
+    }
+
+    // if ( currScore === 0 && )
+  };
   const generateAtLeastOneTrue = (deck) => {
     if (currScore === 0) {
       return -1;
@@ -188,6 +208,21 @@ const Deck = (props) => {
       rng = Math.floor(Math.random() * (max - min) + min);
       alreadyTrue = deck[rng].generated;
     }
+    console.log(deck[rng]);
+    return rng;
+  };
+
+  const generateAtLeastOneFalse = (deck) => {
+    const min = Math.ceil(0);
+    const max = Math.floor(23);
+
+    let rng = Math.floor(Math.random() * (max - min) + min);
+    let alreadyFalse = deck[rng].generated; // Look for false
+
+    while (alreadyFalse) {
+      rng = Math.floor(Math.random() * (max - min) + min);
+      alreadyFalse = deck[rng].generated;
+    }
 
     return rng;
   };
@@ -199,13 +234,54 @@ const Deck = (props) => {
 
     // const threeCards = deck.map()
     const threeCards = [];
-    for (let i = 0; i < 3; i += 1) {
+    let cardOne = generateAtLeastOneFalse(deck);
+    let cardTwo = generateAtLeastOneTrue(deck);
+    let cardThree = generateAtLeastOneFalse(deck);
+    let cardFour = generateAtLeastOneFalse(deck);
+    let cardFive = generateAtLeastOneTrue(deck);
+
+    console.log(`Card One: ${cardOne}
+                Card Two: ${cardTwo}
+                Card Three: ${cardThree}
+                Card Four: ${cardThree}`);
+
+    // Issue: ran out of false. Infinite loop
+    if (cardTwo === -1) {
+    // Duplicate
+      while (cardOne === cardThree || cardFour === cardThree || cardFour === cardOne) {
+        cardOne = generateAtLeastOneFalse(deck);
+        cardThree = generateAtLeastOneFalse(deck);
+        cardFour = generateAtLeastOneFalse(deck);
+      }
+
+      threeCards.push(deck[cardOne]);
+      threeCards.push(deck[cardThree]);
+      threeCards.push(deck[cardFour]);
+    } else if (currScore > 20) {
+      while (cardTwo === cardFive) {
+        cardTwo = generateAtLeastOneTrue(deck);
+        cardFive = generateAtLeastOneTrue(deck);
+      }
+      threeCards.push(deck[cardOne]);
+      threeCards.push(deck[cardTwo]);
+      threeCards.push(deck[cardFive]);
+    } else {
+      while (cardOne === cardThree) {
+        cardOne = generateAtLeastOneFalse(deck);
+        cardThree = generateAtLeastOneFalse(deck);
+      }
+      threeCards.push(deck[cardOne]);
+      threeCards.push(deck[cardTwo]);
+      threeCards.push(deck[cardThree]);
+    }
+
+    /* for (let i = 0; i < 3; i += 1) {
       let rng = Math.floor(Math.random() * (max - min) + min);
       let duplicateNumber = threeCards.includes(deck[rng]);
       const generatedDupe = generateAtLeastOneTrue(deck);
       console.log(`Dupe ID: ${generatedDupe}`);
-      if (generatedDupe !== -1 && !threeCards.includes(deck[rng])) {
-        threeCards.push(deck[rng]);
+      /* if (generatedDupe !== -1 && !threeCards.includes(deck[generatedDupe])) {
+        threeCards.push(deck[generatedDupe]);
         continue;
       }
 
@@ -215,7 +291,7 @@ const Deck = (props) => {
       }
       // console.log(deck[rng]);
       threeCards.push(deck[rng]);
-    }
+    } */
     console.log(threeCards);
     const result = threeCards.map((randomImage) => {
       return <img src={randomImage.src} id={randomImage.id} className="gunCard" alt="randomGun" key={randomImage.id} />;
@@ -226,18 +302,24 @@ const Deck = (props) => {
 
   useEffect(() => {
     const changeGeneratedOnClick = (imageNumber) => {
+      console.log('THIS SHOWED FIRST CLICK');
       const cardArr = [...card];
       // console.log(imageNumber);
       // console.log(imageNumber.id);
       // console.log(card[imageNumber.id]);
 
       // console.log(`${imageNumber.id - 1} ${cardArr[imageNumber.id - 1].generated}`);
-      if (cardArr[imageNumber.id - 1].generated === false) {
-        givePoint();
-        cardArr[imageNumber.id - 1].generated = true;
+      if (currScore === 0) {
+        if (cardArr[imageNumber.id - 1].generated === false) {
+          cardArr[imageNumber.id - 1].generated = true;
+        }
+        manuallyAddFirstPoint();
         setCard(cardArr);
-
-        console.log('IN CHANGE GENERATED ON CLICK');
+      } else if (cardArr[imageNumber.id - 1].generated === false) {
+        cardArr[imageNumber.id - 1].generated = true;
+        givePoint();
+        setCard(cardArr);
+        // console.log('IN CHANGE GENERATED ON CLICK');
       } else {
         gameOverScore();
       }
