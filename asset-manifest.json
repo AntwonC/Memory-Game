@@ -1,0 +1,36 @@
+{
+  "files": {
+    "main.css": "/react-gh-pages/static/css/main.6ea4d15c.css",
+    "main.js": "/react-gh-pages/static/js/main.eb229c29.js",
+    "static/media/aughbar.png": "/react-gh-pages/static/media/aughbar.bb46b257f44a98f727e0.png",
+    "static/media/m14ebr.png": "/react-gh-pages/static/media/m14ebr.5b7565cfa0f84b1d2a42.png",
+    "static/media/m240.png": "/react-gh-pages/static/media/m240.9b32f227fd779028cc26.png",
+    "static/media/m4a1.png": "/react-gh-pages/static/media/m4a1.3e071d720690c2abeb6b.png",
+    "static/media/ak47.png": "/react-gh-pages/static/media/ak47.96a4bd8cce84228d34e6.png",
+    "static/media/scarh.png": "/react-gh-pages/static/media/scarh.e286b3c767a1af00ae50.png",
+    "static/media/mg4.png": "/react-gh-pages/static/media/mg4.8c5c7f138c78e527fe5b.png",
+    "static/media/intervention.png": "/react-gh-pages/static/media/intervention.07aee0a464dadc5acf92.png",
+    "static/media/tar21.png": "/react-gh-pages/static/media/tar21.33a43a9adebc8eae33da.png",
+    "static/media/wa2000.png": "/react-gh-pages/static/media/wa2000.2aafafb0d4802aab4984.png",
+    "static/media/acr.png": "/react-gh-pages/static/media/acr.86292140d186470cc062.png",
+    "static/media/f2000.png": "/react-gh-pages/static/media/f2000.2b936c9b19242c6d1ef9.png",
+    "static/media/rpd.png": "/react-gh-pages/static/media/rpd.4ab2eab884354ad5b7f7.png",
+    "static/media/vector.png": "/react-gh-pages/static/media/vector.00af88ec6568334b24e9.png",
+    "static/media/l86lsw.png": "/react-gh-pages/static/media/l86lsw.73d045938204b6e5869a.png",
+    "static/media/famas.png": "/react-gh-pages/static/media/famas.c4b9a4bf7441be78e102.png",
+    "static/media/barret50cal.png": "/react-gh-pages/static/media/barret50cal.453341019c6f7a2cd373.png",
+    "static/media/p90.png": "/react-gh-pages/static/media/p90.fe6b443d847bbcda3f1f.png",
+    "static/media/ump45.png": "/react-gh-pages/static/media/ump45.8eb0e00ec9319ced3895.png",
+    "static/media/mp5k.png": "/react-gh-pages/static/media/mp5k.f2cb184c0f4cff98e26c.png",
+    "static/media/m16.png": "/react-gh-pages/static/media/m16.7b01e4511025b76b7d72.png",
+    "static/media/fal.png": "/react-gh-pages/static/media/fal.49dd7c4b3489d5336aab.png",
+    "static/media/miniuzi.png": "/react-gh-pages/static/media/miniuzi.a41fdcdfb75b5bd01409.png",
+    "index.html": "/react-gh-pages/index.html",
+    "main.6ea4d15c.css.map": "/react-gh-pages/static/css/main.6ea4d15c.css.map",
+    "main.eb229c29.js.map": "/react-gh-pages/static/js/main.eb229c29.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6ea4d15c.css",
+    "static/js/main.eb229c29.js"
+  ]
+}
