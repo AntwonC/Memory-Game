@@ -176,8 +176,7 @@ const Deck = (props) => {
 
   const manuallyAddFirstPoint = () => {
     const cardArr = [...card];
-    console.log('This ran');
-    console.log(currScore + 1);
+
     if (currScore === 0) {
       console.log('Must run');
       for (let i = 0; i < cardArr.length; i += 1) {
@@ -243,7 +242,8 @@ const Deck = (props) => {
     console.log(`Card One: ${cardOne}
                 Card Two: ${cardTwo}
                 Card Three: ${cardThree}
-                Card Four: ${cardThree}`);
+                Card Four: ${cardFour});
+                Card Five: ${cardFive}`);
 
     // Issue: ran out of false. Infinite loop
     if (cardTwo === -1) {
@@ -257,7 +257,7 @@ const Deck = (props) => {
       threeCards.push(deck[cardOne]);
       threeCards.push(deck[cardThree]);
       threeCards.push(deck[cardFour]);
-    } else if (currScore > 20) {
+    } else if (currScore >= 20 && currScore < 23) {
       while (cardTwo === cardFive) {
         cardTwo = generateAtLeastOneTrue(deck);
         cardFive = generateAtLeastOneTrue(deck);
@@ -302,7 +302,6 @@ const Deck = (props) => {
 
   useEffect(() => {
     const changeGeneratedOnClick = (imageNumber) => {
-      console.log('THIS SHOWED FIRST CLICK');
       const cardArr = [...card];
       // console.log(imageNumber);
       // console.log(imageNumber.id);
@@ -321,6 +320,7 @@ const Deck = (props) => {
         setCard(cardArr);
         // console.log('IN CHANGE GENERATED ON CLICK');
       } else {
+        console.log('THE CAUSE');
         gameOverScore();
       }
     };
@@ -348,7 +348,7 @@ const Deck = (props) => {
   return (
     <div>
       <div>
-        {generateThreeCards(card)}
+        {currScore < 23 && generateThreeCards(card)}
       </div>
     </div>
   );
