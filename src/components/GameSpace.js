@@ -13,6 +13,8 @@ const GameSpace = () => {
   };
 
   const resetScore = () => {
+    const highestScore = Math.max(score, bestScore);
+    setBestScore(highestScore);
     setScore(0);
   };
 

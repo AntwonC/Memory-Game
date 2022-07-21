@@ -11,3 +11,8 @@
     font-family: t26-carbon, monospace;
     
 }
+
+.cardContainer {
+    display: flex; 
+    justify-content: center;
+}

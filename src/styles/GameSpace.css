@@ -5,3 +5,10 @@
     margin-left: -8px;
     margin-right: -8px;
 }
+
+.gunCard {
+    margin-top: 30px;
+    margin-left: 40px;
+    border: 4px solid green; 
+
+}

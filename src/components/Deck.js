@@ -1,9 +1,12 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable no-continue */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 /* eslint-disable global-require */
 /* eslint-disable arrow-body-style */
 import React, { useState, useEffect } from 'react';
+import Card from './Card';
 import famas from '../images/famas.png';
 import m4a1 from '../images/m4a1.png';
 import acr from '../images/acr.png';
@@ -31,139 +34,139 @@ import wa2000 from '../images/wa2000.png';
 const Deck = (props) => {
   const images = [
     {
-      id: 1,
+      id: 0,
       src: famas,
       name: 'famas',
       generated: false,
     },
     {
-      id: 2,
+      id: 1,
       src: m4a1,
       name: 'm4a1',
       generated: false,
     },
     {
-      id: 3,
+      id: 2,
       src: acr,
       name: 'acr',
       generated: false,
     },
     {
-      id: 4,
+      id: 3,
       src: ak47,
       name: 'ak47',
       generated: false,
     },
     {
-      id: 5,
+      id: 4,
       src: aughbar,
       name: 'aughar',
       generated: false,
     },
     {
-      id: 6,
+      id: 5,
       src: barret50cal,
       name: 'barret50cal',
       generated: false,
     },
     {
-      id: 7,
+      id: 6,
       src: f2000,
       name: 'f2000',
       generated: false,
     },
     {
-      id: 8,
+      id: 7,
       src: fal,
       name: 'fal',
       generated: false,
     },
     {
-      id: 9,
+      id: 8,
       src: intervention,
       name: 'intervention',
       generated: false,
     },
     {
-      id: 10,
+      id: 9,
       src: l86lsw,
       name: 'l86lsw',
       generated: false,
     },
     {
-      id: 11,
+      id: 10,
       src: m14ebr,
       name: 'm14ebr',
       generated: false,
     },
     {
-      id: 12,
+      id: 11,
       src: m16,
       name: 'm16',
       generated: false,
     },
     {
-      id: 13,
+      id: 12,
       src: m240,
       name: 'm240',
       generated: false,
     },
     {
-      id: 14,
+      id: 13,
       src: mg4,
       name: 'mg4',
       generated: false,
     },
     {
-      id: 15,
+      id: 14,
       src: miniuzi,
       name: 'miniuzi',
       generated: false,
     },
     {
-      id: 16,
+      id: 15,
       src: mp5k,
       name: 'mp5k',
       generated: false,
     },
     {
-      id: 17,
+      id: 16,
       src: p90,
       name: 'p90',
       generated: false,
     },
     {
-      id: 18,
+      id: 17,
       src: rpd,
       name: 'rpd',
       generated: false,
     },
     {
-      id: 19,
+      id: 18,
       src: scarh,
       name: 'scarh',
       generated: false,
     },
     {
-      id: 20,
+      id: 19,
       src: tar21,
       name: 'tar21',
       generated: false,
     },
     {
-      id: 21,
+      id: 20,
       src: ump45,
       name: 'ump45',
       generated: false,
     },
     {
-      id: 22,
+      id: 21,
       src: vector,
       name: 'vector',
       generated: false,
     },
     {
-      id: 23,
+      id: 22,
       src: wa2000,
       name: 'wa2000',
       generated: false,
@@ -173,19 +176,26 @@ const Deck = (props) => {
   // const { currentScore, bestScore } = score;
   const [card, setCard] = useState(images);
   const { givePoint, gameOverScore, currScore } = props;
+  const numberOfCards = 3;
 
+  const gameOverReset = () => {
+    const cardArr = [...card];
+
+    for (let i = 0; i < cardArr.length; i += 1) {
+      cardArr[i].generated = false;
+    }
+
+    setCard(cardArr);
+  };
   const manuallyAddFirstPoint = () => {
     const cardArr = [...card];
 
     if (currScore === 0) {
-      console.log('Must run');
       for (let i = 0; i < cardArr.length; i += 1) {
         // console.log(cardArr[i]);
         if (cardArr[i].generated) {
-          console.log(cardArr[i]);
-
           givePoint();
-          console.log('After give Point()');
+
           break;
         }
       }
@@ -203,11 +213,11 @@ const Deck = (props) => {
     let rng = Math.floor(Math.random() * (max - min) + min);
     let alreadyTrue = deck[rng].generated;
 
-    while (!alreadyTrue) {
+    while (alreadyTrue === false) {
       rng = Math.floor(Math.random() * (max - min) + min);
       alreadyTrue = deck[rng].generated;
     }
-    console.log(deck[rng]);
+    // console.log(deck[rng]);
     return rng;
   };
 
@@ -225,6 +235,37 @@ const Deck = (props) => {
 
     return rng;
   };
+
+  const changeGeneratedOnClick = (evt) => {
+    const cardArr = [...card];
+    const { id } = evt.target;
+
+    // console.log(imageNumber);
+    // console.log(imageNumber.id);
+    // console.log(card[imageNumber.id]);
+
+    // console.log(`${imageNumber.id - 1} ${cardArr[imageNumber.id - 1].generated}`);
+    if (currScore === 0) {
+      if (cardArr[id].generated === false) {
+        cardArr[id].generated = true;
+      }
+      manuallyAddFirstPoint();
+      setCard(cardArr);
+    } else if (cardArr[id].generated === false) {
+      cardArr[id].generated = true;
+      givePoint();
+      setCard(cardArr);
+      // console.log('IN CHANGE GENERATED ON CLICK');
+    } else if (cardArr[id].generated === true) {
+      // console.log('THE CAUSE');
+      // console.log(cardArr);
+      // console.log(id);
+      // console.log(cardArr[id]);
+      // console.log(cardArr[id].generated);
+      gameOverReset();
+      gameOverScore();
+    }
+  };
   // Generate three cards, but also generate at least 1 generated: true card
   const generateThreeCards = (deck) => {
     const deckSize = images.length;
@@ -239,11 +280,11 @@ const Deck = (props) => {
     let cardFour = generateAtLeastOneFalse(deck);
     let cardFive = generateAtLeastOneTrue(deck);
 
-    console.log(`Card One: ${cardOne}
+    /* console.log(`Card One: ${cardOne}
                 Card Two: ${cardTwo}
                 Card Three: ${cardThree}
                 Card Four: ${cardFour});
-                Card Five: ${cardFive}`);
+                Card Five: ${cardFive}`); */
 
     // Issue: ran out of false. Infinite loop
     if (cardTwo === -1) {
@@ -292,41 +333,21 @@ const Deck = (props) => {
       // console.log(deck[rng]);
       threeCards.push(deck[rng]);
     } */
-    console.log(threeCards);
+    // console.log(threeCards);
     const result = threeCards.map((randomImage) => {
-      return <img src={randomImage.src} id={randomImage.id} className="gunCard" alt="randomGun" key={randomImage.id} />;
+    //  console.log(randomImage);
+      return <img src={randomImage.src} onClick={changeGeneratedOnClick} id={randomImage.id} className="gunCard" alt="randomGun" key={randomImage.id} />;
     });
+
+    // threeCards = [];
 
     return result;
   };
 
   useEffect(() => {
-    const changeGeneratedOnClick = (imageNumber) => {
-      const cardArr = [...card];
-      // console.log(imageNumber);
-      // console.log(imageNumber.id);
-      // console.log(card[imageNumber.id]);
-
-      // console.log(`${imageNumber.id - 1} ${cardArr[imageNumber.id - 1].generated}`);
-      if (currScore === 0) {
-        if (cardArr[imageNumber.id - 1].generated === false) {
-          cardArr[imageNumber.id - 1].generated = true;
-        }
-        manuallyAddFirstPoint();
-        setCard(cardArr);
-      } else if (cardArr[imageNumber.id - 1].generated === false) {
-        cardArr[imageNumber.id - 1].generated = true;
-        givePoint();
-        setCard(cardArr);
-        // console.log('IN CHANGE GENERATED ON CLICK');
-      } else {
-        console.log('THE CAUSE');
-        gameOverScore();
-      }
-    };
-
     const gunImage = document.querySelectorAll('.gunCard');
-
+    /* const gunImage = document.querySelectorAll('.gunCard');
+    console.log(gunImage);
     for (let i = 0; i < gunImage.length; i += 1) {
       gunImage[i].addEventListener('click', () => {
         changeGeneratedOnClick(gunImage[i]);
@@ -340,14 +361,19 @@ const Deck = (props) => {
       /*  gunImage[j].removeEventListener('click', () => {
           changeGeneratedOnClick(gunImage[j]);
           // console.log(gunImage[j]);
-        }); */
+        });
+      }
+    }; */
+    return () => {
+      for (let j = 0; j < gunImage.length; j += 1) {
+        gunImage[j].removeEventListener('click', changeGeneratedOnClick);
       }
     };
     // gunImage.addEventListener('click', changeGeneratedOnClick);
-  }, [card, currScore]);
+  }, [card]);
   return (
     <div>
-      <div>
+      <div className="cardContainer">
         {currScore < 23 && generateThreeCards(card)}
       </div>
     </div>
