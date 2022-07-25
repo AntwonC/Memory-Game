@@ -1,6 +1,6 @@
 # Getting Started with Create React App
-[Memory Game](https://antwonc.github.io/Memory-Game/)\ 
-Above is the link to the project hosted on Github pages\
+[Memory Game](https://antwonc.github.io/Memory-Game/)<br/>
+Above is the link to the project hosted on Github pages<br/>
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
