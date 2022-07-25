@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable no-continue */
@@ -6,7 +7,6 @@
 /* eslint-disable global-require */
 /* eslint-disable arrow-body-style */
 import React, { useState, useEffect } from 'react';
-import Card from './Card';
 import famas from '../images/famas.png';
 import m4a1 from '../images/m4a1.png';
 import acr from '../images/acr.png';
@@ -173,11 +173,24 @@ const Deck = (props) => {
     },
   ];
 
-  // const { currentScore, bestScore } = score;
   const [card, setCard] = useState(images);
   const { givePoint, gameOverScore, currScore } = props;
   const numberOfCards = 3;
+  const maxScore = 23;
 
+  // Randomize array in-place using Durstenfeld shuffle algorithm
+  const shuffleArray = (array) => {
+    const shuffledArr = [...array];
+    for (let i = shuffledArr.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = shuffledArr[i];
+      shuffledArr[i] = shuffledArr[j];
+      shuffledArr[j] = temp;
+    }
+
+    return shuffledArr;
+  };
+  // When the player loses
   const gameOverReset = () => {
     const cardArr = [...card];
 
@@ -187,22 +200,20 @@ const Deck = (props) => {
 
     setCard(cardArr);
   };
+  // Changing the score after the initial pick
   const manuallyAddFirstPoint = () => {
     const cardArr = [...card];
 
     if (currScore === 0) {
       for (let i = 0; i < cardArr.length; i += 1) {
-        // console.log(cardArr[i]);
         if (cardArr[i].generated) {
           givePoint();
-
           break;
         }
       }
     }
-
-    // if ( currScore === 0 && )
   };
+  // Returns a card that is already true
   const generateAtLeastOneTrue = (deck) => {
     if (currScore === 0) {
       return -1;
@@ -217,10 +228,10 @@ const Deck = (props) => {
       rng = Math.floor(Math.random() * (max - min) + min);
       alreadyTrue = deck[rng].generated;
     }
-    // console.log(deck[rng]);
+
     return rng;
   };
-
+  // Returns a card that is false
   const generateAtLeastOneFalse = (deck) => {
     const min = Math.ceil(0);
     const max = Math.floor(23);
@@ -235,16 +246,11 @@ const Deck = (props) => {
 
     return rng;
   };
-
+  // function run when a card is clicked
   const changeGeneratedOnClick = (evt) => {
     const cardArr = [...card];
     const { id } = evt.target;
 
-    // console.log(imageNumber);
-    // console.log(imageNumber.id);
-    // console.log(card[imageNumber.id]);
-
-    // console.log(`${imageNumber.id - 1} ${cardArr[imageNumber.id - 1].generated}`);
     if (currScore === 0) {
       if (cardArr[id].generated === false) {
         cardArr[id].generated = true;
@@ -255,13 +261,7 @@ const Deck = (props) => {
       cardArr[id].generated = true;
       givePoint();
       setCard(cardArr);
-      // console.log('IN CHANGE GENERATED ON CLICK');
     } else if (cardArr[id].generated === true) {
-      // console.log('THE CAUSE');
-      // console.log(cardArr);
-      // console.log(id);
-      // console.log(cardArr[id]);
-      // console.log(cardArr[id].generated);
       gameOverReset();
       gameOverScore();
     }
@@ -272,19 +272,12 @@ const Deck = (props) => {
     const min = Math.ceil(0);
     const max = Math.floor(23);
 
-    // const threeCards = deck.map()
-    const threeCards = [];
+    let threeCards = [];
     let cardOne = generateAtLeastOneFalse(deck);
     let cardTwo = generateAtLeastOneTrue(deck);
     let cardThree = generateAtLeastOneFalse(deck);
     let cardFour = generateAtLeastOneFalse(deck);
     let cardFive = generateAtLeastOneTrue(deck);
-
-    /* console.log(`Card One: ${cardOne}
-                Card Two: ${cardTwo}
-                Card Three: ${cardThree}
-                Card Four: ${cardFour});
-                Card Five: ${cardFive}`); */
 
     // Issue: ran out of false. Infinite loop
     if (cardTwo === -1) {
@@ -316,66 +309,38 @@ const Deck = (props) => {
       threeCards.push(deck[cardThree]);
     }
 
-    /* for (let i = 0; i < 3; i += 1) {
-      let rng = Math.floor(Math.random() * (max - min) + min);
-      let duplicateNumber = threeCards.includes(deck[rng]);
-      const generatedDupe = generateAtLeastOneTrue(deck);
-      console.log(`Dupe ID: ${generatedDupe}`);
-      /* if (generatedDupe !== -1 && !threeCards.includes(deck[generatedDupe])) {
-        threeCards.push(deck[generatedDupe]);
-        continue;
-      }
+    threeCards = shuffleArray(threeCards);
 
-      while (duplicateNumber) {
-        rng = Math.floor(Math.random() * (max - min) + min);
-        duplicateNumber = threeCards.includes(deck[rng]);
-      }
-      // console.log(deck[rng]);
-      threeCards.push(deck[rng]);
-    } */
-    // console.log(threeCards);
     const result = threeCards.map((randomImage) => {
-    //  console.log(randomImage);
       return <img src={randomImage.src} onClick={changeGeneratedOnClick} id={randomImage.id} className="gunCard" alt="randomGun" key={randomImage.id} />;
     });
 
-    // threeCards = [];
-
     return result;
+  };
+  // Resets the game automatically because of useEffect() hook.
+  const winningScreenElement = () => {
+    useEffect(() => {
+      if (currScore === maxScore) {
+        gameOverScore();
+        gameOverReset();
+      }
+    }, [currScore]);
   };
 
   useEffect(() => {
     const gunImage = document.querySelectorAll('.gunCard');
-    /* const gunImage = document.querySelectorAll('.gunCard');
-    console.log(gunImage);
-    for (let i = 0; i < gunImage.length; i += 1) {
-      gunImage[i].addEventListener('click', () => {
-        changeGeneratedOnClick(gunImage[i]);
-        // console.log(gunImage[i]);
-      });
-    }
-
-    return () => {
-      for (let j = 0; j < gunImage.length; j += 1) {
-        gunImage[j].removeEventListener('click', changeGeneratedOnClick);
-      /*  gunImage[j].removeEventListener('click', () => {
-          changeGeneratedOnClick(gunImage[j]);
-          // console.log(gunImage[j]);
-        });
-      }
-    }; */
     return () => {
       for (let j = 0; j < gunImage.length; j += 1) {
         gunImage[j].removeEventListener('click', changeGeneratedOnClick);
       }
     };
-    // gunImage.addEventListener('click', changeGeneratedOnClick);
   }, [card]);
   return (
     <div>
       <div className="cardContainer">
-        {currScore < 23 && generateThreeCards(card)}
+        {currScore < maxScore && generateThreeCards(card)}
       </div>
+      {winningScreenElement()}
     </div>
   );
 };

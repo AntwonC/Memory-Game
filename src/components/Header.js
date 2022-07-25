@@ -9,7 +9,6 @@ const Header = () => {
   return (
     <div id="headerContainer">
       <h1 id="headerTitle">Call of Duty Memory Game</h1>
-
       <p>Don't click on the same weapon twice!</p>
     </div>
   );
